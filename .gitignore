@@ -1,0 +1,28 @@
+# Ambiente virtual (recriar com: pip install -r requirements-lock.txt)
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Log de auditoria gerado em tempo de execucao
+logs/
+*.log
+
+# Temporarios da gravacao atomica de dados/chamados.json
+dados/*.tmp
+
+# Pacote de entrega
+*.zip
+
+# Variaveis de ambiente / credenciais
+.env
+.env.*
+
+# Editores e sistema operacional
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

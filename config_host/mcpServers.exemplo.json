@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "suporte-ads": {
+      "command": "C:\\Users\\pauloemilio\\Documents\\Visual Code\\Projects\\AtividadeMCP\\mcp_suporte\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\Users\\pauloemilio\\Documents\\Visual Code\\Projects\\AtividadeMCP\\mcp_suporte\\servidor.py"]
+    }
+  }
+}

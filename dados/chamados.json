@@ -1,0 +1,8 @@
+{
+  "chamados": [
+    {"id": 101, "titulo": "Falha no login", "prioridade": "alta", "status": "aberto"},
+    {"id": 102, "titulo": "Duvida no relatorio", "prioridade": "baixa", "status": "aberto"},
+    {"id": 103, "titulo": "Erro na API", "prioridade": "alta", "status": "aberto"},
+    {"id": 104, "titulo": "Exportacao de PDF lenta", "prioridade": "baixa", "status": "fechado"}
+  ]
+}

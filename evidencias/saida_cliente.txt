@@ -1,0 +1,81 @@
+
+=== initialize ===
+Servidor: Suporte ADS 1.30.0
+Protocolo: 2025-11-25
+
+=== tools/list ===
+Ferramentas: ['listar_chamados', 'consultar_chamado', 'filtrar_chamados']
+- listar_chamados (readOnly=True): Lista todos os chamados ficticios com id, titulo, prioridade e status.
+  inputSchema: {'properties': {}, 'title': 'listar_chamadosArguments', 'type': 'object'}
+- consultar_chamado (readOnly=True): Consulta um chamado pelo identificador inteiro positivo.
+  inputSchema: {'properties': {'id': {'description': 'Identificador do chamado (inteiro positivo), ex.: 101', 'title': 'Id', 'type': 'integer'}}, 'required': ['id'], 'title': 'consultar_chamadoArguments', 'type': 'object'}
+- filtrar_chamados (readOnly=True): Lista os chamados de uma prioridade (alta, media ou baixa).
+  inputSchema: {'properties': {'prioridade': {'description': 'alta, media ou baixa', 'enum': ['alta', 'media', 'baixa'], 'title': 'Prioridade', 'type': 'string'}}, 'required': ['prioridade'], 'title': 'filtrar_chamadosArguments', 'type': 'object'}
+
+=== resources/list ===
+- suporte://politica (text/plain): Regras de uso dos dados de suporte que a IA deve seguir.
+
+=== prompts/list ===
+- analisar_chamado args=['id']: Pede a IA que consulte o chamado pela ferramenta e explique a prioridade.
+
+=== resources/read suporte://politica ===
+Politica do assistente de suporte (dados ficticios):
+1. Responda sobre chamados somente com base no retorno das ferramentas.
+2. Nao invente chamados, IDs, titulos, prioridades ou status.
+3. Se a ferramenta retornar erro, informe o erro; nao crie dados.
+4. fechar_chamado altera dados e exige confirmacao humana antes da chamada.
+5. Prioridades validas: alta, media, baixa. Status validos: aberto, fechado.
+
+=== prompts/get analisar_chamado id=101 ===
+Consulte o chamado 101 usando a ferramenta consultar_chamado e explique a prioridade com base apenas no retorno da ferramenta. Se a ferramenta retornar erro ou o chamado nao existir, informe a ausencia sem criar dados.
+
+=== tools/call consultar_chamado id=101 ===
+{
+  "meta": null,
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"id\": 101,\n  \"titulo\": \"Falha no login\",\n  \"prioridade\": \"alta\",\n  \"status\": \"aberto\"\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ],
+  "structuredContent": {
+    "id": 101,
+    "titulo": "Falha no login",
+    "prioridade": "alta",
+    "status": "aberto"
+  },
+  "isError": false
+}
+
+=== tools/call consultar_chamado id=999 (erro esperado) ===
+isError: True
+Error executing tool consultar_chamado: Chamado 999 nao encontrado
+
+=== tools/call filtrar_chamados prioridade=alta ===
+isError: False
+{
+  "prioridade": "alta",
+  "total": 2,
+  "chamados": [
+    {
+      "id": 101,
+      "titulo": "Falha no login",
+      "prioridade": "alta",
+      "status": "aberto"
+    },
+    {
+      "id": 103,
+      "titulo": "Erro na API",
+      "prioridade": "alta",
+      "status": "aberto"
+    }
+  ]
+}
+
+=== tools/call filtrar_chamados prioridade=urgente (erro esperado) ===
+isError: True
+Error executing tool filtrar_chamados: Prioridade invalida: 'urgente'. Use alta, media ou baixa.
+
+Verificacao concluida: todas as assercoes passaram.
